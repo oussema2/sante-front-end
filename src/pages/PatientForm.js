@@ -19,7 +19,9 @@ const PatientForm = () => {
 
   useEffect(() => {
     (async () => {
-      const response = await axios.get("http://localhost:5000/doctor/getAll");
+      const response = await axios.get(
+        "https://santer-server.herokuapp.com/doctor/getAll"
+      );
       setdata(response.data.doctors);
     })();
   }, []);

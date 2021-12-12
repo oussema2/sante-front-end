@@ -49,7 +49,7 @@ function Row(props) {
     };
 
     const response = await axios.post(
-      "http://localhost:5000/doctor/addAppointment",
+      "https://santer-server.herokuapp.com/doctor/addAppointment",
       dataAPI,
       {
         "Content-Type": "application/json",
@@ -59,7 +59,7 @@ function Row(props) {
     if (response.data.status === 200) {
       (async () => {
         const response = await axios.get(
-          `http://localhost:5000/doctor/getPendings/${props.doctorId}`
+          `https://santer-server.herokuapp.com/doctor/getPendings/${props.doctorId}`
         );
         if (response.data.status === 200) {
           props.setpendings(response.data.pendings);
@@ -184,7 +184,7 @@ export default function TableData(props) {
   useEffect(() => {
     (async () => {
       const response = await axios.get(
-        `http://localhost:5000/doctor/getPendings/${props.doctorId}`
+        `https://santer-server.herokuapp.com/doctor/getPendings/${props.doctorId}`
       );
       if (response.data.status === 200) {
         setpendings(response.data.pendings);

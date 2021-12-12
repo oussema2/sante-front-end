@@ -72,7 +72,7 @@ export default function SpringModal(props) {
       values["_id"] = props.idDoctor;
 
       const response = await axios.post(
-        "http://localhost:5000/doctor/addPending",
+        "https://santer-server.herokuapp.com/doctor/addPending",
         values,
         {
           "Content-Type": "application/json",

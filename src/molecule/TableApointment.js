@@ -54,7 +54,7 @@ export default function TableAppointments(props) {
   useEffect(() => {
     (async () => {
       const response = await axios.get(
-        `http://localhost:5000/doctor/getAppointments/${props.doctorId}`
+        `https://santer-server.herokuapp.com/doctor/getAppointments/${props.doctorId}`
       );
       if (response.data.status === 200) {
         setappointments(response.data.appointments);

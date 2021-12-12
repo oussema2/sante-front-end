@@ -39,7 +39,7 @@ const DoctorRegister = () => {
       formData.append("imagePath", image);
 
       const response = await axios.post(
-        "http://localhost:5000/doctor/auth/register",
+        "https://santer-server.herokuapp.com/doctor/auth/register",
         formData,
         {
           "Content-Type": "application/json",

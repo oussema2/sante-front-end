@@ -24,7 +24,7 @@ const DoctorLogin = () => {
     onSubmit: async (values) => {
       setloading(true);
       const response = await axios.post(
-        "http://localhost:5000/doctor/auth/signin",
+        "https://santer-server.herokuapp.com/doctor/auth/signin",
         values,
         {
           "Content-Type": "application/json",
