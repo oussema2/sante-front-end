@@ -18,7 +18,7 @@ export default function DoctorCarte(props) {
         component="img"
         alt="green iguana"
         height="240"
-        image="http://localhost:5000/images/20190723_203750.jpg"
+        image="https://santer-server.herokuapp.com/images/20190723_203750.jpg"
       />
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
