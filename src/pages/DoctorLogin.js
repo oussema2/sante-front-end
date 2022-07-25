@@ -10,6 +10,9 @@ import axios from "axios";
 import Loader from "react-loader-spinner";
 import { useNavigate } from "react-router-dom";
 import { Alert, AlertTitle } from "@mui/material";
+import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import ReactLoading from "react-loading";
 
 const DoctorLogin = () => {
   const navigate = useNavigate();
@@ -24,7 +27,7 @@ const DoctorLogin = () => {
     onSubmit: async (values) => {
       setloading(true);
       const response = await axios.post(
-        "https://santer-server.herokuapp.com/doctor/auth/signin",
+        "http://localhost:5000/doctor/auth/signin",
         values,
         {
           "Content-Type": "application/json",
@@ -38,7 +41,7 @@ const DoctorLogin = () => {
         navigate(`/dashboard/${response.data.doctor._id}`);
       }
       if (response.data.status === 401) {
-        setmessage("Échec de l'authentification, e-mail erroné");
+        setmessage("Login Failed Email is incorrect");
         setalertStatus("error");
         setInterval(() => {
           setalertStatus("");
@@ -46,7 +49,7 @@ const DoctorLogin = () => {
         setloading(false);
       }
       if (response.data.status === 402) {
-        setmessage("Échec de l'authentification, mot de passe invalide");
+        setmessage("Échec de l'Login Failed Password is incorrect");
         setalertStatus("error");
         setInterval(() => {
           setalertStatus("");
@@ -74,51 +77,59 @@ const DoctorLogin = () => {
           {" "}
           <Text classes="font-weight-lighter" text="SignIn Doctor" />
         </div>
-        <form onSubmit={formik.handleSubmit}>
-          <input
-            id="email"
-            name="email"
-            type="text"
-            onChange={formik.handleChange}
-            value={formik.values.email}
-            placeholder="e-mail"
-            className="width-100 inputLogin emailInput "
-            style={{ height: `40px`, marginBottom: `20px` }}
-          />
-          <input
-            id="password"
-            name="password"
-            onChange={formik.handleChange}
-            value={formik.values.password}
-            type="text"
-            placeholder="Mot de passe"
-            className="width-100 inputLogin passwordInput  "
-            style={{ height: `40px`, marginBottom: `20px` }}
-          />
+        <form style={{ width: "100%" }} onSubmit={formik.handleSubmit}>
+          <div style={{ position: "relative", width: "100%" }}>
+            <input
+              id="email"
+              name="email"
+              type="text"
+              onChange={formik.handleChange}
+              value={formik.values.email}
+              placeholder="e-mail"
+              className="width-100 inputLogin emailInput "
+              style={{ height: `40px`, marginBottom: `20px`, paddingLeft: 40 }}
+            />
+            <EmailOutlinedIcon
+              style={{ position: "absolute", left: 5, top: 32, color: "gray" }}
+            />
+          </div>
+          <div style={{ position: "relative", width: "100%" }}>
+            <input
+              id="password"
+              name="password"
+              onChange={formik.handleChange}
+              value={formik.values.password}
+              type="password"
+              placeholder="Mot de passe"
+              className="width-100 inputLogin passwordInput  "
+              style={{ height: `40px`, marginBottom: `20px`, paddingLeft: 40 }}
+            />
+            <LockOutlinedIcon
+              style={{ position: "absolute", left: 5, top: 32, color: "gray" }}
+            />
+          </div>
           <Column classes="width-100">
             {loading === false ? (
               <Button
-                text="S'identifier"
+                text="Login"
                 type="submit"
                 width="200"
                 height="40"
                 classes="margin-top-20px  width-100  transition-0-3s default-Button"
               />
             ) : (
-              <div className="margin-top-20px width-200px height-20px display-flex alignItemts-center justifyContent-center">
-                <Loader
-                  type="TailSpin"
-                  color="#F26A1B
-                  "
-                  height={50}
+              <div className="loaderContainer">
+                <ReactLoading
+                  type={"bars"}
+                  color={"orange"}
+                  height={100}
                   width={50}
-                  //3 secs
                 />
               </div>
             )}
             <Link to="/doctorregister">
               <Button
-                text="S'inscrire"
+                text="Register"
                 width="200"
                 height="40"
                 classes="margin-top-20px  width-100  transition-0-3s patient-Button"
@@ -137,19 +148,17 @@ const DoctorLogin = () => {
           width="300"
         />
         <Text
-          text="Si vous voulez un docteur cliquez ici"
+          text="If you want a doctor click here"
           classes=" textAlign-center font-weight-lighter fontSize-25px margin-top-50px "
         />
         <Link to="/patientform">
           <Button
-            text="Trouver un médecin"
+            text="Find a Docter instead"
             width="200"
-            height="40"
             classes="margin-top-20px   transition-0-3s default-Button"
           />
         </Link>
       </Column>
-      <div className="height-1200px position-absolute  boxShadow-grey top0px width-1200px bgr-orange rotate35deg margin-left border-radius-60px "></div>{" "}
     </div>
   );
 };

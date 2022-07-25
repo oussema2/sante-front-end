@@ -59,7 +59,7 @@ const DoctorDashboard = () => {
         <Row classes="width-100 alignItems-center  justifyContent-center margin-top-50px ">
           <Button
             clickEvent={() => changeTable("pend")}
-            text="En attente"
+            text="Pending Appointments"
             height="50"
             width="200"
             classes="transition-0-3s scale-1-25 default-Button  "
@@ -67,7 +67,7 @@ const DoctorDashboard = () => {
 
           <Button
             clickEvent={() => changeTable("app")}
-            text="Rendez-vous"
+            text="Checked Appointments"
             height="50"
             width="200"
             classes="transition-0-3s scale-1-25 patient-Button  "
@@ -76,24 +76,30 @@ const DoctorDashboard = () => {
         <Row classes="alignItems-center justifyContent-center margin-top-50px">
           <div className="  width-1400px  ">
             {table === "pend" ? (
-              <TableData doctorId={_id} title="En attente" isPending={false} />
+              <TableData
+                doctorId={_id}
+                title="Pending Apointments"
+                isPending={false}
+              />
             ) : (
               <TableApointment
                 doctorId={_id}
-                title="Rendez-vous "
+                title="Checked Appointment list "
                 isPending={true}
               />
             )}
           </div>
         </Row>
       </Column>
-      <Button
-        clickEvent={() => navigate("/")}
-        text="Se déconnecter"
-        height="50"
-        width="200"
-        classes="transition-0-3s scale-1-25 patient-Button  "
-      />
+      <div style={{ marginTop: 50 }} className="logout-container-btn-style">
+        <Button
+          clickEvent={() => navigate("/")}
+          text="Logout"
+          height="50"
+          width="200"
+          classes="transition-0-3s scale-1-25 patient-Button  "
+        />
+      </div>
     </Column>
   );
 };

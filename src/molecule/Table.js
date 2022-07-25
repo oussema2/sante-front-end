@@ -14,14 +14,12 @@ import Paper from "@mui/material/Paper";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import Text from "../atome/Text";
-import TextField from "@mui/material/TextField";
-import AdapterDateFns from "@mui/lab/AdapterDateFns";
-import StaticTimePicker from "@mui/lab/StaticTimePicker";
-import LocalizationProvider from "@mui/lab/LocalizationProvider";
-import DatePicker from "@mui/lab/DatePicker";
+
+import ReactLoading from "react-loading";
+// import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+
 import Button from "../atome/Button";
 import axios from "axios";
-import Loader from "react-loader-spinner";
 
 function Row(props) {
   const { row } = props;
@@ -32,24 +30,15 @@ function Row(props) {
   const [loading, setloading] = useState(false);
   const addAppointment = async () => {
     setloading(true);
-    const timeString = timeValue.toLocaleString("en-US", {
-      hour: "numeric",
-      minute: "numeric",
-      hour12: true,
-    });
-    const dateString = date.toLocaleDateString("en-US", {
-      day: "numeric",
-      year: "numeric",
-      month: "numeric",
-    });
+
     const dataAPI = {
       _id: props.doctorId,
       _idPatient: row._id,
-      dateAppointment: dateString + " " + timeString,
+      dateAppointment: date + " " + timeValue,
     };
 
     const response = await axios.post(
-      "https://santer-server.herokuapp.com/doctor/addAppointment",
+      "http://localhost:5000/doctor/addAppointment",
       dataAPI,
       {
         "Content-Type": "application/json",
@@ -59,7 +48,7 @@ function Row(props) {
     if (response.data.status === 200) {
       (async () => {
         const response = await axios.get(
-          `https://santer-server.herokuapp.com/doctor/getPendings/${props.doctorId}`
+          `http://localhost:5000/doctor/getPendings/${props.doctorId}`
         );
         if (response.data.status === 200) {
           props.setpendings(response.data.pendings);
@@ -100,14 +89,20 @@ function Row(props) {
                 <TableHead>
                   <TableRow>
                     <TableCell align="left">Date</TableCell>
-                    <TableCell align="left">Temps</TableCell>
+                    <TableCell align="left">Time</TableCell>
                     <TableCell align="left">Action</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   <TableCell align="left">
                     {" "}
-                    <LocalizationProvider dateAdapter={AdapterDateFns}>
+                    <input
+                      type={"date"}
+                      mask="____/__/__"
+                      value={date}
+                      onChange={(e) => setDate(e.target.value)}
+                    />
+                    {/* <LocalizationProvider dateAdapter={AdapterDateFns}>
                       <DatePicker
                         label="Exemple de base"
                         value={date}
@@ -116,10 +111,16 @@ function Row(props) {
                         }}
                         renderInput={(params) => <TextField {...params} />}
                       />
-                    </LocalizationProvider>
+                    </LocalizationProvider> */}
                   </TableCell>
                   <TableCell align="left">
-                    <LocalizationProvider dateAdapter={AdapterDateFns}>
+                    <input
+                      type={"time"}
+                      mask="____/__/__"
+                      value={timeValue}
+                      onChange={(e) => settimeValue(e.target.value)}
+                    />
+                    {/* <LocalizationProvider dateAdapter={AdapterDateFns}>
                       <StaticTimePicker
                         displayStaticWrapperAs="mobile"
                         value={timeValue}
@@ -128,21 +129,21 @@ function Row(props) {
                         }}
                         renderInput={(params) => <TextField {...params} />}
                       />
-                    </LocalizationProvider>
+                    </LocalizationProvider> */}
                   </TableCell>
                   <TableCell align="left">
                     {loading ? (
-                      <Loader
-                        type="TailSpin"
-                        color="#F26A1B
-            "
-                        height={50}
-                        width={50}
-                        //3 secs
-                      />
+                      <div className="loaderContainer">
+                        <ReactLoading
+                          type={"bars"}
+                          color={"orange"}
+                          height={100}
+                          width={50}
+                        />
+                      </div>
                     ) : (
                       <Button
-                        text="Ajouter un rendez-vous"
+                        text="Add an appointment"
                         type="submit"
                         width="200"
                         height="40"
@@ -181,11 +182,16 @@ Row.propTypes = {
 
 export default function TableData(props) {
   const [pendings, setpendings] = useState([]);
+  const [loading, setloading] = useState(false);
   useEffect(() => {
     (async () => {
+      setloading(true);
       const response = await axios.get(
-        `https://santer-server.herokuapp.com/doctor/getPendings/${props.doctorId}`
+        `http://localhost:5000/doctor/getPendings/${props.doctorId}`
       );
+      if (response) {
+        setloading(false);
+      }
       if (response.data.status === 200) {
         setpendings(response.data.pendings);
       }
@@ -193,14 +199,17 @@ export default function TableData(props) {
   }, [props.doctorId]);
   return (
     <TableContainer component={Paper}>
-      <Text text={props.title} />
+      <div style={{ zidth: "100%", textAlign: "center" }}>
+        {" "}
+        <Text text={props.title} />
+      </div>
       <Table aria-label="collapsible table">
         <TableHead>
           <TableRow>
             <TableCell />
 
-            <TableCell align="left">Le patient</TableCell>
-            <TableCell align="left">Date D'inscription</TableCell>
+            <TableCell align="left"> patient</TableCell>
+            <TableCell align="left">Inscription Date</TableCell>
             <TableCell align="left">Email</TableCell>
           </TableRow>
         </TableHead>
@@ -221,6 +230,16 @@ export default function TableData(props) {
           )}
         </TableBody>
       </Table>
+      {loading ? (
+        <div className="loaderContainer">
+          <ReactLoading
+            type={"bars"}
+            color={"orange"}
+            height={100}
+            width={50}
+          />{" "}
+        </div>
+      ) : null}
     </TableContainer>
   );
 }

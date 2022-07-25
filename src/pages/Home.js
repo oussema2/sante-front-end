@@ -24,17 +24,17 @@ const Home = () => {
           <Column classes="height-100vh display-flex alignItems-center justifyContent-center">
             <Column classes="width-70">
               <Text
-                text="meilleur site  pour trouver des médecins dans plusieurs spécialités"
+                text="best site to find doctors in several specialties"
                 classes="fontSize-50px  "
               />
               <Text
-                text="Patient ? , click sur la bouton pour trouver un médecin de votre besoin"
+                text="Patient ? , click on the button to find a doctor of your needs"
                 classes="fontSize-20px   "
               />
               <Row>
                 <Link to="/doctorlogin">
                   <Button
-                    text="Medecin"
+                    text="Doctor"
                     height="50"
                     width="200"
                     justifyContent-center="200"

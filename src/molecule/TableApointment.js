@@ -9,7 +9,7 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Text from "../atome/Text";
 import axios from "axios";
-
+import ReactLoading from "react-loading";
 function Row(props) {
   const { row } = props;
 
@@ -25,6 +25,9 @@ function Row(props) {
         </TableCell>
         <TableCell component="th" scope="row">
           {row.patient.email}
+        </TableCell>
+        <TableCell component="th" scope="row">
+          {row.patient.phoneNumber}
         </TableCell>
       </TableRow>
     </React.Fragment>
@@ -51,11 +54,16 @@ Row.propTypes = {
 
 export default function TableAppointments(props) {
   const [appointments, setappointments] = useState([]);
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
     (async () => {
+      setLoading(true);
       const response = await axios.get(
-        `https://santer-server.herokuapp.com/doctor/getAppointments/${props.doctorId}`
+        `http://localhost:5000/doctor/getAppointments/${props.doctorId}`
       );
+      if (response) {
+        setLoading(false);
+      }
       if (response.data.status === 200) {
         setappointments(response.data.appointments);
       }
@@ -63,15 +71,19 @@ export default function TableAppointments(props) {
   }, [props.doctorId]);
   return (
     <TableContainer component={Paper}>
-      <Text text={props.title} />
+      <div style={{ zidth: "100%", textAlign: "center" }}>
+        {" "}
+        <Text text={props.title} />
+      </div>
       <Table aria-label="collapsible table">
         <TableHead>
           <TableRow>
             <TableCell />
 
-            <TableCell align="left">Le patient</TableCell>
-            <TableCell align="left">Rendez-vous</TableCell>
+            <TableCell align="left">The Patient</TableCell>
+            <TableCell align="left">Appointment</TableCell>
             <TableCell align="left">E-mail</TableCell>
+            <TableCell align="left">Phone Number</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -81,11 +93,21 @@ export default function TableAppointments(props) {
             ))
           ) : (
             <div className="display-flex width-100 alignItems-center justifyContent-center">
-              <h1>Pas de rendez-vous en attente</h1>
+              <h1>No appointment pendings</h1>
             </div>
           )}
         </TableBody>
       </Table>
+      {loading ? (
+        <div className="loaderContainer">
+          <ReactLoading
+            type={"bars"}
+            color={"orange"}
+            height={100}
+            width={50}
+          />{" "}
+        </div>
+      ) : null}
     </TableContainer>
   );
 }

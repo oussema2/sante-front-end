@@ -7,6 +7,8 @@ import DoctorCarte from "../molecule/DoctorCatre";
 import SpringModal from "../molecule/Modal";
 import Image from "../atome/Image";
 import { Link } from "react-router-dom";
+import ReactLoading from "react-loading";
+
 const PatientForm = () => {
   const [open, setOpen] = React.useState(false);
   const [idDoctor, setidDoctor] = useState("");
@@ -19,9 +21,7 @@ const PatientForm = () => {
 
   useEffect(() => {
     (async () => {
-      const response = await axios.get(
-        "https://santer-server.herokuapp.com/doctor/getAll"
-      );
+      const response = await axios.get("http://localhost:5000/doctor/getAll");
       setdata(response.data.doctors);
     })();
   }, []);
@@ -38,18 +38,27 @@ const PatientForm = () => {
       </Link>
 
       <div className=" display-flex alignItems-center justifyContent-center height-150px width-100">
-        <Text text="Liste des médecins" classes="fontSize-50px " />
+        <Text text="Doctors List" classes="fontSize-50px " />
       </div>
 
       <Row classes="flexWrap-wrap alignItems-center justifyContent-center paddingLeft-50px paddingRight-50px  ">
-        {data
-          ? data.map((item) => (
-              <DoctorCarte
-                detail={item}
-                clickEvent={() => handleOpen(item._id)}
-              />
-            ))
-          : null}
+        {data && data.length > 0 ? (
+          data.map((item) => (
+            <DoctorCarte
+              detail={item}
+              clickEvent={() => handleOpen(item._id)}
+            />
+          ))
+        ) : (
+          <div className="loaderContainer">
+            <ReactLoading
+              type={"bars"}
+              color={"orange"}
+              height={500}
+              width={250}
+            />
+          </div>
+        )}
       </Row>
 
       <SpringModal open={open} idDoctor={idDoctor} handleClose={handleClose} />

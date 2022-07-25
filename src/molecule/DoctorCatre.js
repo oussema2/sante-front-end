@@ -8,6 +8,7 @@ import Typography from "@mui/material/Typography";
 import Row from "../Containers/Row";
 
 export default function DoctorCarte(props) {
+  console.log(props);
   return (
     <Card
       className="boxShadowCarte margin-10px "
@@ -18,7 +19,7 @@ export default function DoctorCarte(props) {
         component="img"
         alt="green iguana"
         height="240"
-        image="https://santer-server.herokuapp.com/images/20190723_203750.jpg"
+        image={`http://localhost:5000/images/${props.detail.imagePath}`}
       />
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
@@ -33,7 +34,7 @@ export default function DoctorCarte(props) {
       </CardContent>
       <CardActions>
         <Row classes="width-100 justifyContent-spaceBetween alignItems-center padding-10px  ">
-          <Button onClick={props.clickEvent}>Ajouter Un Rendez-vous</Button>
+          <Button onClick={props.clickEvent}>Add an appointment</Button>
         </Row>
       </CardActions>
     </Card>

@@ -12,7 +12,7 @@ function App() {
     <div className="App bgr-dce0f5  projectFont ">
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route exact path="/" element={<Home />} />
           <Route path="/patientform" element={<PatientForm />} />
           <Route path="/doctorregister" element={<DoctorRegister />} />
           <Route path="/doctorlogin" element={<DoctorLogin />} />
